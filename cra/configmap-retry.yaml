@@ -5,6 +5,7 @@ metadata:
   name: retry-script
 data:
   retry.sh: |
+    #!/bin/sh
     ##########################################################################
     # Parse the image url to find information (region, namespace, image name and eventually tag)
     # as url of Image PipelineResource is the complete path to the image, including the registry

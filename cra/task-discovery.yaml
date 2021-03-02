@@ -65,6 +65,8 @@ spec:
             set -x +e
           fi
 
+          ls -la /scripts
+          cat /scripts/retry.sh
           source /scripts/retry.sh
           echo "next"
           /scripts/retry.sh

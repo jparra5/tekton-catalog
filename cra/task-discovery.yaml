@@ -65,6 +65,10 @@ spec:
             set -x +e
           fi
 
+          source /scripts/retry.sh
+          echo "next"
+          /scripts/retry.sh
+
           REPO_DIR_PATH="/artifacts/$(params.directory-name)"
 
           TOOLCHAIN_REGION=$(cat /config/toolchain.json | jq -r '.region_id' | awk -F: '{print $3}')
@@ -148,7 +152,9 @@ spec:
           name: environment-properties
         - mountPath: /secrets
           name: secure-properties    
-
+        - mountPath: /scripts
+          name: retry-script
+  
   sidecars:
     - image: docker:19.03-dind
       name: server
@@ -186,4 +192,9 @@ spec:
     - name: secure-properties
       secret:
         secretName: $(params.continuous-delivery-context-secret)
-
+    - name: retry-script
+      configMap:
+        name: retry-script
+        items:
+          - key: retry.sh
+            path: retry.sh

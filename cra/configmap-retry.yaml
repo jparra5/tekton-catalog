@@ -26,7 +26,7 @@ data:
     retry_max=3
     retry_delay=2
     while true; do
-      if [ "$@" ]; then
+      if [ $("$@") ]; then
         break
       else
         if [ $retry_n -lt $retry_max ]; then

@@ -18,7 +18,7 @@ data:
     # - IMAGE_NAME (output)
     # - IMAGE_TAG (output)
     ##########################################################################
-    set -x +e
+    #set -x +e
     echo "woot"
     echo $@
     echo $1

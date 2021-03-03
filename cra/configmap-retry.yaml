@@ -25,7 +25,8 @@ data:
       out=$("$@")
       resp=$?
       echo -n "$out"
-      if [ "$resp" ]; then
+      echo "$resp"
+      if [ "$resp" = "0" ]; then
         break
       else
         if [ $retry_n -lt $retry_max ]; then

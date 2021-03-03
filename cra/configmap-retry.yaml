@@ -19,9 +19,17 @@ data:
     # - IMAGE_TAG (output)
     ##########################################################################
     echo "woot"
+    echo $@
     echo $1
     echo $2
     echo $3
+    echo $4
+    echo $5
+    echo $6
+    echo $7
+    echo $8
+    $("$@")
+    echo "done"
     retry_n=1
     retry_max=3
     retry_delay=2

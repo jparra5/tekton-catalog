@@ -25,7 +25,6 @@ data:
       out=$("$@")
       resp=$?
       echo -n "$out"
-      echo "$resp"
       if [ "$resp" = "0" ]; then
         break
       else

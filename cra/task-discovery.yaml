@@ -65,7 +65,7 @@ spec:
             set -x +e
           fi
 
-          . /scripts/retry.sh ibmcloud login -a $API_ENDPOINT -r $TOOLCHAIN_REGION --apikey $API_KEY
+          sh /scripts/retry.sh ibmcloud login -a $API_ENDPOINT -r $TOOLCHAIN_REGION --apikey $API_KEY
 
           REPO_DIR_PATH="/artifacts/$(params.directory-name)"
 

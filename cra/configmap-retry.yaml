@@ -30,7 +30,7 @@ data:
         break
       else
         if [ $retry_n -lt $retry_max ]; then
-          retry_n=$($retry_n + 1)
+          retry_n=`expr "$retry_n" + "1"`
           echo "Command failed. Attempt $retry_n/$retry_max:"
           sleep $retry_delay;
         else

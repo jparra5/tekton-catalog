@@ -33,7 +33,7 @@ data:
           sleep $delay;
         else
           echo "The command has failed after $n attempts."
-  	  exit 1
+          exit 1
         fi
       }
     done

@@ -5,7 +5,7 @@ metadata:
   name: retry-script
 data:
   retry.sh: |
-    #!/bin/sh
+    #!/usr/bin/env bash
     ##########################################################################
     # Parse the image url to find information (region, namespace, image name and eventually tag)
     # as url of Image PipelineResource is the complete path to the image, including the registry
@@ -22,3 +22,18 @@ data:
     echo $1
     echo $2
     echo $3
+    local n=1
+    local max=3
+    local delay=2
+    while true; do
+      "$@" && break || {
+        if [[ $n -lt $max ]]; then
+          ((n++))
+          echo "Command failed. Attempt $n/$max:"
+          sleep $delay;
+        else
+          echo "The command has failed after $n attempts."
+  	  exit 1
+        fi
+      }
+    done

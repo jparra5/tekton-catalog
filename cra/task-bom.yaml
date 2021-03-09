@@ -191,6 +191,14 @@ spec:
               trap env EXIT
               set -x
           fi
+          
+          ls -l "$(results.status.path)"
+          cat "$(results.status.path)"
+          if [ "$(results.status.path)" == "passed" ]; then
+            echo "Scan was successful. PR comment will not be posted."
+            exit 0
+          fi
+          
           TOOLCHAIN_ID=$(jq -r '.toolchain_guid' /cd-config/toolchain.json)
           TOOLCHAIN_REGION=$(jq -r '.region_id' /cd-config/toolchain.json | awk -F: '{print $3}')
           REGION_ID=$(jq -r '.region_id' /cd-config/toolchain.json)
@@ -284,6 +292,14 @@ spec:
       args:
         - |
           #!/bin/sh
+          
+          ls -l "$(results.status.path)"
+          cat "$(results.status.path)"
+          if [ "$(results.status.path)" == "passed" ]; then
+            echo "Scan was successful. PR comment will not be posted."
+            exit 0
+          fi
+          
           source /steps/next-step-env.properties
 
           /usr/local/bin/comm-editor \

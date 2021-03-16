@@ -198,9 +198,7 @@ spec:
               set -x
           fi
           
-          ls -l "$(results.status.path)"
-          cat "$(results.status.path)"
-          if [ "$(results.status.path)" == "success" ]; then
+          if [ $(cat "$(results.status.path)") == "success" ]; then
             echo "Scan was successful. PR comment will not be posted."
             exit 0
           fi
@@ -298,6 +296,11 @@ spec:
       args:
         - |
           #!/bin/sh
+          if [ $(cat "$(results.status.path)") == "success" ]; then
+            echo "Scan was successful. PR comment will not be posted."
+            exit 0
+          fi
+          
           source /steps/next-step-env.properties
           
           if [ -n "$(params.scm-type)" ]; then

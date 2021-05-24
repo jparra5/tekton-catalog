@@ -69,7 +69,7 @@ spec:
         value: $(params.tf-var-file)
   steps:
     - name: terraform-compliance
-      image: icr.io/continuous-delivery/cra-terraform:release.1909
+      image: davidlopez0912/terraform-ca:v1
       envFrom:
         - configMapRef:
             name: environment-properties
@@ -131,6 +131,7 @@ spec:
           fi
           HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
           gitsecureUrl=$(echo ${HTTP_BODY} | jq -r '.service_urls.gitsecure')
+          echo $gitsecureUrl
           if [[ -z "$gitsecureUrl" || "$gitsecureUrl" = "null" ]]; then
             echo ""
             echo "Error IBM Code Risk Analyzer is not supported in ${REGION_ID}"

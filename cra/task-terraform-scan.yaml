@@ -88,13 +88,13 @@ spec:
       command: ["/bin/bash", "-c"]
       args:
         - |
-          if [[ "$PIPELINE_DEBUG" == "1" ]]; then
-            pwd
-            ls /artifacts/
-            env
-            trap env EXIT
-            set -x +e
-          fi
+          
+          pwd
+          ls /artifacts/
+          env
+          trap env EXIT
+          set -x +e
+         
 
           REPO_DIR_PATH="/artifacts/$(params.directory-name)"
           TOOLCHAIN_CONFIG=$(cat /config/toolchain.json)

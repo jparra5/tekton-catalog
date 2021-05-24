@@ -13,6 +13,8 @@ spec:
     - name: branch
       description: the branch
       default: master
+    - name: commit-id
+      description: git commit id
     - name: tf-dir
       description: the directory where the terraform main entry file is found
       default: ""
@@ -69,7 +71,7 @@ spec:
         value: $(params.tf-var-file)
   steps:
     - name: terraform-compliance
-      image: davidlopez0912/terraform-ca:v1
+      image: icr.io/continuous-delivery/cra-terraform:release.1909
       envFrom:
         - configMapRef:
             name: environment-properties
@@ -88,13 +90,13 @@ spec:
       command: ["/bin/bash", "-c"]
       args:
         - |
-          
-          pwd
-          ls /artifacts/
-          env
-          trap env EXIT
-          set -x +e
-         
+          if [[ "$PIPELINE_DEBUG" == "1" ]]; then
+            pwd
+            ls /artifacts/
+            env
+            trap env EXIT
+            set -x +e
+          fi
 
           REPO_DIR_PATH="/artifacts/$(params.directory-name)"
           TOOLCHAIN_CONFIG=$(cat /config/toolchain.json)
@@ -131,7 +133,6 @@ spec:
           fi
           HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
           gitsecureUrl=$(echo ${HTTP_BODY} | jq -r '.service_urls.gitsecure')
-          echo $gitsecureUrl
           if [[ -z "$gitsecureUrl" || "$gitsecureUrl" = "null" ]]; then
             echo ""
             echo "Error IBM Code Risk Analyzer is not supported in ${REGION_ID}"
@@ -149,10 +150,10 @@ spec:
           if [[ "$(params.policy-config-json)" == "" ]];
           then
             node /usr/src/index.js --git_token "NA" --repository $(params.repository) --gitClonedDir $REPO_DIR_PATH \
-              --INPUT_TF_DIR $(params.tf-dir) --revision $(params.branch) --commitid "NA" --pipelinerunid $PIPELINE_RUN_ID --prnumber "NA" --LOG_LEVEL $LOG_LEVEL --silent 1
+              --INPUT_TF_DIR $(params.tf-dir) --revision $(params.branch) --commitid $(params.commit-id) --gitSecureApi $gitsecureUrl --pipelinerunid $PIPELINE_RUN_ID --prnumber "NA" --LOG_LEVEL $LOG_LEVEL --silent 1
           else
             node /usr/src/index.js --policyConfig $(params.policy-config-json) --git_token "NA" --repository $(params.repository) --gitClonedDir $REPO_DIR_PATH \
-              --INPUT_TF_DIR $(params.tf-dir) --revision $(params.branch) --commitid "NA" --pipelinerunid $PIPELINE_RUN_ID --prnumber "NA" --LOG_LEVEL $LOG_LEVEL --silent 1
+              --INPUT_TF_DIR $(params.tf-dir) --revision $(params.branch) --commitid $(params.commit-id) --gitSecureApi $gitsecureUrl --pipelinerunid $PIPELINE_RUN_ID --prnumber "NA" --LOG_LEVEL $LOG_LEVEL --silent 1
           fi
 
           if [ $? == 0 ]; then export result="success"; fi

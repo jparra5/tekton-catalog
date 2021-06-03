@@ -71,7 +71,7 @@ spec:
         value: $(params.tf-var-file)
   steps:
     - name: terraform-compliance
-      image: davidlopez0912/terraform-ca:v1
+      image: us.icr.io/devops_insights_dra_staging/cra-terraform:release.1976
       envFrom:
         - configMapRef:
             name: environment-properties

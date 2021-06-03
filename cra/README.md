@@ -49,6 +49,9 @@ any add-on packages installed on top of base image(s).
   - **pipeline-debug**: (Default: `0`) 1 = enable debug, 0 no debug
   - **continuous-delivery-context-secret**: (Default: `secure-properties`) Reference name for the secret resource
   - **ibmcloud-apikey-secret-key**: (Default: `apikey`) field in the secret that contains the api key used to login to ibmcloud
+  - **exclude-scopes**: (Default: `""`) Specifies which scopes to exclude dependencies in scanning. Example: `test,compile`
+  - **nodejs-create-package-lock**: (Default: `false`) Enable CRA discovery to build the package-lock.json file for node.js repos
+  - **python-create-requirements-txt**: (Default: `false`) Enable CRA discovery to build the requirements.txt file for python repos 
 
 ### Workspaces
 
@@ -98,6 +101,12 @@ Example usage in a pipeline.
           value: "secure-properties"
         - name: ibmcloud-apikey-secret-key
           value: "apikey"
+        - name: exclude-scopes
+          value: $(params.exclude-scopes)
+        - name: nodejs-create-package-lock
+          value: $(params.nodejs-create-package-lock)
+        - name: python-create-requirements-txt
+          value: $(params.python-create-requirements-txt)
 ```
 
 ## cra-bom
@@ -306,6 +315,7 @@ This task finds out vulnerabilities for all application package dependencies, co
   - **project-id**: (Default: `""`) Required id for GitLab repositories
   - **scm-type**: (Default: `github-ent`) Source code type used (github, github-ent, gitlab)
   - **pipeline-debug**: (Default: `0`) 1 = enable debug, 0 no debug
+  - **exclude-dev**: (Default: `false`) Specifies whether to exclude dev dependencies in scanning
   - **repo-dir**: (Default: `/artifacts`) Specifies the path to the repository or .cracveomit file
 
 #### Implicit
@@ -360,6 +370,8 @@ Example usage in a pipeline.
           value: $(params.project-id)    
         - name: pipeline-debug
           value: $(params.pipeline-debug)
+        - name: exclude-dev
+          value: $(params.exclude-dev)
         - name: repo-dir
           value: $(params.repo-dir)
 ```

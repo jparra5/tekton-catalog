@@ -45,10 +45,26 @@ spec:
       value: $(params.pr-repository)
     - name: pr-branch
       value: $(params.pr-branch)
+    - name: exclude-dev
+      value: $(params.exclude-dev)
+      description: (optional) Exclude dev dependencies during vulnerability scan
+      default: "false"
     - name: repo-dir
       value: $(params.repo-dir)
       description: Specifies the path for the repository or .cracveomit file
       default: "/artifacts"
+    - name: exclude-scopes
+      value: $(params.exclude-scopes)
+      description: (optional) Exclude the specified scope dependencies for the vulnerability scan
+      default: ""
+    - name: nodejs-create-package-lock
+      value: $(params.nodejs-create-package-lock)
+      description: (optional) Enable CRA discovery to build the package-lock.json file for node.js repos
+      default: "false"
+    - name: python-create-requirements-txt
+      value: $(params.python-create-requirements-txt)
+      description: (optional) Enable CRA discovery to build the requirements.txt file for python repos
+      default: "false"
   workspaces:
     - name: artifacts
 
@@ -109,6 +125,12 @@ spec:
           value: ""
         - name: commit-timestamp
           value: $(params.commit-timestamp)
+        - name: exclude-scopes
+          value: $(params.exclude-scopes)
+        - name: nodejs-create-package-lock
+          value: $(params.nodejs-create-package-lock)
+        - name: python-create-requirements-txt
+          value: $(params.python-create-requirements-txt)
 
     - name: cra-vulnerability-scan-status-pending
       runAfter:
@@ -161,6 +183,8 @@ spec:
           value: $(params.project-id)
         - name: pipeline-debug
           value: $(params.pipeline-debug)
+        - name: exclude-dev
+          value: $(params.exclude-dev)
         - name: repo-dir
           value: $(params.repo-dir)
 
